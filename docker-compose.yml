@@ -1,0 +1,184 @@
+version: '3.7'
+
+services:
+  php-fpm:
+    build: docker
+    container_name: 'php'
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./:/app
+    working_dir: /app
+    profiles: ["main"]
+
+  nginx:
+    image: nginx
+    container_name: 'nginx'
+    working_dir: /app
+    ports:
+      - '7777:80'
+    volumes:
+      - ./:/app
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+    profiles: ["main"]
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - 15432:5432
+    container_name: 'postgresql'
+    working_dir: /app
+    restart: always
+    environment:
+      POSTGRES_DB: 'twitter'
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
+    volumes:
+      - dump:/app/dump
+      - postgresql:/var/lib/postgresql/data
+    profiles: ["main"]
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: 'zookeper'
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+    profiles: ["main"]
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - 2181:2181
+      - 9092:9092
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    profiles: ["main"]
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop
+    container_name: 'kafdrop'
+    restart: "no"
+    ports:
+      - 9900:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:9092
+    depends_on:
+      - "kafka"
+    profiles: ["main"]
+
+  rabbitmq:
+    image: rabbitmq:4.0-management
+    working_dir: /app
+    hostname: rabbit-mq
+    container_name: 'rabbit-mq'
+    ports:
+      - 15672:15672
+      - 5672:5672
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    profiles: ["main"]
+
+  graphite:
+    image: graphiteapp/graphite-statsd
+    container_name: 'graphite'
+    restart: always
+    ports:
+      - 8000:80
+      - 2003:2003
+      - 2004:2004
+      - 2023:2023
+      - 2024:2024
+      - 8125:8125/udp
+      - 8126:8126
+    profiles: ["main"]
+
+  grafana:
+    image: grafana/grafana
+    container_name: 'grafana'
+    restart: always
+    ports:
+      - 3000:3000
+    profiles: ["main"]
+
+  supervisor_single:
+    build: docker/supervisor
+    container_name: 'supervisor'
+    volumes:
+      - ./:/app
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./supervisor/single_consumer.conf:/etc/supervisor.d/supervisor.conf
+    working_dir: /app
+    command: ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+    profiles: ["single"]
+
+  supervisor_scaled:
+    build: docker/supervisor
+    container_name: 'supervisor'
+    volumes:
+      - ./:/app
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./supervisor/scaled_consumer.conf:/etc/supervisor.d/supervisor.conf
+    working_dir: /app
+    command: ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+    profiles: ["scaled"]
+
+  supervisor_distributed:
+    build: docker/supervisor
+    container_name: 'supervisor'
+    volumes:
+      - ./:/app
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./supervisor/distributed_consumer.conf:/etc/supervisor.d/supervisor.conf
+    working_dir: /app
+    command: ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+    profiles: ["distributed"]
+
+  supervisor_hashed:
+    build: docker/supervisor
+    container_name: 'supervisor'
+    volumes:
+      - ./:/app
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./supervisor/hashed_consumer.conf:/etc/supervisor.d/supervisor.conf
+    working_dir: /app
+    command: ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+    profiles: ["hashed"]
+
+  supervisor_hashed_balanced:
+    build: docker/supervisor
+    container_name: 'supervisor'
+    volumes:
+      - ./:/app
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./supervisor/hashed_balanced_consumer.conf:/etc/supervisor.d/supervisor.conf
+    working_dir: /app
+    command: ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+    profiles: ["hashed_balanced"]
+
+  supervisor_redistributed:
+    build: docker/supervisor
+    container_name: 'supervisor'
+    volumes:
+      - ./:/app
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+      - ./supervisor/redistributed_consumer.conf:/etc/supervisor.d/supervisor.conf
+    working_dir: /app
+    command: ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+    profiles: ["redistributed"]
+
+volumes:
+  dump:
+  postgresql:

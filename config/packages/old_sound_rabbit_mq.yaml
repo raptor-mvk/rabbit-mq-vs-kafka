@@ -1,0 +1,98 @@
+old_sound_rabbit_mq:
+    connections:
+        default:
+            url: '%env(RABBITMQ_URL)%'
+    producers:
+        scaling:
+            exchange_options: { name: 'scaling', type: direct }
+        distributed:
+            exchange_options: { name: 'distributed', type: direct }
+        hashed:
+            exchange_options: { name: 'hashed', type: x-consistent-hash }
+        redistribute:
+            exchange_options: { name: 'redistribute', type: direct }
+    consumers:
+        scaling0:
+            exchange_options: { name: 'scaling', type: direct }
+            queue_options: { name: 'scaling' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer0
+
+        scaling1:
+            exchange_options: { name: 'scaling', type: direct }
+            queue_options: { name: 'scaling' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer1
+
+        scaling2:
+            exchange_options: { name: 'scaling', type: direct }
+            queue_options: { name: 'scaling' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer2
+
+        scaling3:
+            exchange_options: { name: 'scaling', type: direct }
+            queue_options: { name: 'scaling' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer3
+
+        distributed0:
+            exchange_options: { name: 'distributed', type: direct }
+            queue_options: { name: 'distributed0', routing_keys: [group0] }
+            callback: App\Controller\RabbitMq\EventLog\Consumer0
+
+        distributed1:
+            exchange_options: { name: 'distributed', type: direct }
+            queue_options: { name: 'distributed1', routing_keys: [group1] }
+            callback: App\Controller\RabbitMq\EventLog\Consumer1
+
+        distributed2:
+            exchange_options: { name: 'distributed', type: direct }
+            queue_options: { name: 'distributed2', routing_keys: [group2] }
+            callback: App\Controller\RabbitMq\EventLog\Consumer2
+
+        distributed3:
+            exchange_options: { name: 'distributed', type: direct }
+            queue_options: { name: 'distributed3', routing_keys: [group3] }
+            callback: App\Controller\RabbitMq\EventLog\Consumer3
+
+        hashed0:
+            exchange_options: { name: 'hashed', type: x-consistent-hash }
+            queue_options: { name: 'hashed0', routing_key: '1' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer0
+
+        hashed1:
+            exchange_options: { name: 'hashed', type: x-consistent-hash }
+            queue_options: { name: 'hashed1', routing_key: '1' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer1
+
+        hashed2:
+            exchange_options: { name: 'hashed', type: x-consistent-hash }
+            queue_options: { name: 'hashed2', routing_key: '1' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer2
+
+        hashed3:
+            exchange_options: { name: 'hashed', type: x-consistent-hash }
+            queue_options: { name: 'hashed3', routing_key: '1' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer3
+
+        hashed_balanced0:
+            exchange_options: { name: 'hashed', type: x-consistent-hash }
+            queue_options: { name: 'hashed0', routing_key: '20' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer0
+
+        hashed_balanced1:
+            exchange_options: { name: 'hashed', type: x-consistent-hash }
+            queue_options: { name: 'hashed1', routing_key: '20' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer1
+
+        hashed_balanced2:
+            exchange_options: { name: 'hashed', type: x-consistent-hash }
+            queue_options: { name: 'hashed2', routing_key: '20' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer2
+
+        hashed_balanced3:
+            exchange_options: { name: 'hashed', type: x-consistent-hash }
+            queue_options: { name: 'hashed3', routing_key: '20' }
+            callback: App\Controller\RabbitMq\EventLog\Consumer3
+
+        redistribute:
+            exchange_options: { name: 'redistribute', type: direct }
+            queue_options: { name: 'redistribute' }
+            callback: App\Controller\RabbitMq\Redistribute\Consumer

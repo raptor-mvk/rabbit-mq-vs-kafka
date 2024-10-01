@@ -1,0 +1,167 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Domain/Entity/'
+            - '../src/Domain/Model/'
+            - '../src/Domain/Types/'
+            - '../src/Controller/**/Message.php'
+            - '../src/Controller/**/*DTO.php'
+            - '../src/Controller/**/Consumer.php'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    App\Infrastructure\Bus\MetricsBus:
+        arguments:
+            $host: graphite
+            $port: 8125
+            $namespace: app
+
+    App\Infrastructure\Bus\RabbitMqBus:
+        calls:
+            - [ 'registerProducer', [!php/enum App\Domain\Types\QueueEnum::Scaling, '@old_sound_rabbit_mq.scaling_producer']]
+            - [ 'registerProducer', [!php/enum App\Domain\Types\QueueEnum::Distributed, '@old_sound_rabbit_mq.distributed_producer']]
+            - [ 'registerProducer', [!php/enum App\Domain\Types\QueueEnum::Hashed, '@old_sound_rabbit_mq.hashed_producer']]
+            - [ 'registerProducer', [!php/enum App\Domain\Types\QueueEnum::Redistribute, '@old_sound_rabbit_mq.redistribute_producer']]
+
+    App\Controller\RabbitMq\EventLog\Consumer0:
+        class: App\Controller\RabbitMq\EventLog\Consumer
+        arguments:
+            $metric: !php/enum App\Domain\Types\MetricsEnum::RabbitMqConsumer0Processed
+
+    App\Controller\RabbitMq\EventLog\Consumer1:
+        class: App\Controller\RabbitMq\EventLog\Consumer
+        arguments:
+            $metric: !php/enum App\Domain\Types\MetricsEnum::RabbitMqConsumer1Processed
+
+    App\Controller\RabbitMq\EventLog\Consumer2:
+        class: App\Controller\RabbitMq\EventLog\Consumer
+        arguments:
+            $metric: !php/enum App\Domain\Types\MetricsEnum::RabbitMqConsumer2Processed
+
+    App\Controller\RabbitMq\EventLog\Consumer3:
+        class: App\Controller\RabbitMq\EventLog\Consumer
+        arguments:
+            $metric: !php/enum App\Domain\Types\MetricsEnum::RabbitMqConsumer3Processed
+
+    App\Controller\RabbitMq\Redistribute\Consumer:
+
+    App\Controller\Kafka\EventLog\Consumer0:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Scaling ]
+            $groupId: group1
+            $name: scaling0
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer0Processed
+
+    App\Controller\Kafka\EventLog\Consumer1:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Scaling ]
+            $groupId: group1
+            $name: scaling1
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer1Processed
+
+    App\Controller\Kafka\EventLog\Consumer2:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Scaling ]
+            $groupId: group1
+            $name: scaling2
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer2Processed
+
+    App\Controller\Kafka\EventLog\Consumer3:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Scaling ]
+            $groupId: group1
+            $name: scaling3
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer3Processed
+
+    App\Controller\Kafka\EventLog\Consumer\Distributed0:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Distributed ]
+            $groupId: group1
+            $name: distributed0
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer0Processed
+
+    App\Controller\Kafka\EventLog\Consumer\Distributed1:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Distributed ]
+            $groupId: group1
+            $name: distributed1
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer1Processed
+
+    App\Controller\Kafka\EventLog\Consumer\Distributed2:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Distributed ]
+            $groupId: group1
+            $name: distributed2
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer2Processed
+
+    App\Controller\Kafka\EventLog\Consumer\Distributed3:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Distributed ]
+            $groupId: group1
+            $name: distributed3
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer3Processed
+
+    App\Controller\Kafka\EventLog\Consumer\Hashed0:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Hashed ]
+            $groupId: group1
+            $name: hashed0
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer0Processed
+
+    App\Controller\Kafka\EventLog\Consumer\Hashed1:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Hashed ]
+            $groupId: group1
+            $name: hashed1
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer1Processed
+
+    App\Controller\Kafka\EventLog\Consumer\Hashed2:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Hashed ]
+            $groupId: group1
+            $name: hashed2
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer2Processed
+
+    App\Controller\Kafka\EventLog\Consumer\Hashed3:
+        class: App\Controller\Kafka\EventLog\Consumer
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Hashed ]
+            $groupId: group1
+            $name: hashed3
+            $metric: !php/enum App\Domain\Types\MetricsEnum::KafkaConsumer3Processed
+
+    App\Controller\Kafka\Redistribute\Consumer:
+        arguments:
+            $topics: [ !php/enum App\Domain\Types\QueueEnum::Redistribute ]
+            $groupId: group1
+            $name: redistribute
+            $coeff: 4

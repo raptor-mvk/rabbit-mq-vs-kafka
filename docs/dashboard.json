@@ -1,0 +1,868 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "fdzh4vyu73fggf"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 2,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "graphite",
+        "uid": "fdzh4vyu73fggf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "movingSum(stats_counts.app.kafka.processed.total,\"1hour\")"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Kafka"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "movingSum(stats_counts.app.rabbit_mq.processed.total,\"1hour\")"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "RabbitMQ"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 6,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "refCount": 0,
+          "refId": "Kafka",
+          "target": "movingSum(stats_counts.app.kafka.processed.total, '1hour')"
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "RabbitMQ",
+          "target": "movingSum(stats_counts.app.rabbit_mq.processed.total, '1hour')"
+        }
+      ],
+      "title": "Total messages consumed",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "graphite",
+        "uid": "fdzh4vyu73fggf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stats_counts.app.kafka.processed.total"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Kafka"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stats_counts.app.rabbit_mq.processed.total"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "RabbitMQ"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "refCount": 0,
+          "refId": "Kafka",
+          "target": "stats_counts.app.kafka.processed.total"
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "RabbitMQ",
+          "target": "stats_counts.app.rabbit_mq.processed.total"
+        }
+      ],
+      "title": "Messages per period",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "graphite",
+        "uid": "fdzh4vyu73fggf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "movingSum(stats_counts.app.kafka.processed.consumer_0,\"2min\")"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Kafka Consumer #0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "movingSum(stats_counts.app.kafka.processed.consumer_1,\"2min\")"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Kafka Consumer #1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "movingSum(stats_counts.app.kafka.processed.consumer_2,\"2min\")"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Kafka Consumer #2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "movingSum(stats_counts.app.kafka.processed.consumer_3,\"2min\")"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Kafka Consumer #3"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "movingSum(stats_counts.app.rabbit_mq.processed.consumer_0,\"2min\")"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "RabbitMQ Consumer #0"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "movingSum(stats_counts.app.rabbit_mq.processed.consumer_1,\"2min\")"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "RabbitMQ Consumer #1"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "movingSum(stats_counts.app.rabbit_mq.processed.consumer_2,\"2min\")"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "RabbitMQ Consumer #2"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "movingSum(stats_counts.app.rabbit_mq.processed.consumer_3,\"2min\")"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "RabbitMQ Consumer #3"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "refCount": 0,
+          "refId": "Kafka",
+          "target": "movingSum(stats_counts.app.kafka.processed.consumer_0, '2min')"
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "RabbitMQ",
+          "target": "movingSum(stats_counts.app.rabbit_mq.processed.consumer_0, '2min')"
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "A",
+          "target": "movingSum(stats_counts.app.kafka.processed.consumer_1, '2min')"
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "B",
+          "target": "movingSum(stats_counts.app.rabbit_mq.processed.consumer_1, '2min')"
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "C",
+          "target": "movingSum(stats_counts.app.kafka.processed.consumer_2, '2min')"
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "D",
+          "target": "movingSum(stats_counts.app.kafka.processed.consumer_3, '2min')"
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "E",
+          "target": "movingSum(stats_counts.app.rabbit_mq.processed.consumer_2, '2min')"
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "F",
+          "target": "movingSum(stats_counts.app.rabbit_mq.processed.consumer_3, '2min')"
+        }
+      ],
+      "title": "Messages per consumer for the period",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "graphite",
+        "uid": "fdzh4vyu73fggf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stats_counts.app.kafka.race_condition"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Kafka"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stats_counts.app.rabbit_mq.race_condition"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "RabbitMQ"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "refCount": 0,
+          "refId": "A",
+          "target": "stats_counts.app.kafka.race_condition"
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "B",
+          "target": "stats_counts.app.rabbit_mq.race_condition"
+        }
+      ],
+      "title": "Number of collisions because of race condition",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "graphite",
+        "uid": "fdzh4vyu73fggf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stats_counts.app.kafka.broken_order"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Kafka"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stats_counts.app.rabbit_mq.broken_order"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "RabbitMQ"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "refCount": 0,
+          "refId": "A",
+          "target": "stats_counts.app.kafka.broken_order"
+        },
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "fdzh4vyu73fggf"
+          },
+          "hide": false,
+          "refCount": 0,
+          "refId": "B",
+          "target": "stats_counts.app.rabbit_mq.broken_order"
+        }
+      ],
+      "title": "Number of violations of processing order",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "RabbitMQ vs Kafka",
+  "uid": "zdyr5meage03kb",
+  "version": 1,
+  "weekStart": ""
+}
